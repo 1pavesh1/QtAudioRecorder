@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/IMG">
+        <file>IMG/AudioMsg48x48.png</file>
+        <file>IMG/CancelPin50x50.png</file>
+        <file>IMG/SendCommentMsgPin60x60.png</file>
+    </qresource>
+</RCC>
