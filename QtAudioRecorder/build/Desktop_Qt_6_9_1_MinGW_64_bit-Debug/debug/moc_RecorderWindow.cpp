@@ -42,7 +42,12 @@ template <> constexpr inline auto RecorderWindow::qt_create_metaobjectdata<qt_me
         "on_startAudioButton_clicked",
         "",
         "on_stopAudioButton_clicked",
-        "on_addAudioRecordButton_clicked"
+        "on_addAudioRecordButton_clicked",
+        "updateDuration",
+        "duration",
+        "on_inputComboBox_currentIndexChanged",
+        "index",
+        "on_outputComboBox_currentIndexChanged"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -52,6 +57,18 @@ template <> constexpr inline auto RecorderWindow::qt_create_metaobjectdata<qt_me
         QtMocHelpers::SlotData<void()>(3, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'on_addAudioRecordButton_clicked'
         QtMocHelpers::SlotData<void()>(4, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'updateDuration'
+        QtMocHelpers::SlotData<void(qint64)>(5, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::LongLong, 6 },
+        }}),
+        // Slot 'on_inputComboBox_currentIndexChanged'
+        QtMocHelpers::SlotData<void(int)>(7, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::Int, 8 },
+        }}),
+        // Slot 'on_outputComboBox_currentIndexChanged'
+        QtMocHelpers::SlotData<void(int)>(9, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::Int, 8 },
+        }}),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -78,10 +95,12 @@ void RecorderWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         case 0: _t->on_startAudioButton_clicked(); break;
         case 1: _t->on_stopAudioButton_clicked(); break;
         case 2: _t->on_addAudioRecordButton_clicked(); break;
+        case 3: _t->updateDuration((*reinterpret_cast< std::add_pointer_t<qint64>>(_a[1]))); break;
+        case 4: _t->on_inputComboBox_currentIndexChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 5: _t->on_outputComboBox_currentIndexChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
         default: ;
         }
     }
-    (void)_a;
 }
 
 const QMetaObject *RecorderWindow::metaObject() const
@@ -103,14 +122,14 @@ int RecorderWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 6)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 6;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 6)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 3;
+        _id -= 6;
     }
     return _id;
 }

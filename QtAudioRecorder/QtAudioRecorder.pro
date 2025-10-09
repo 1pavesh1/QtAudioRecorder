@@ -1,4 +1,4 @@
-QT       += core gui multimedia
+QT       += core gui widgets multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,6 +14,7 @@ SOURCES += \
 
 HEADERS += \
     CustomWidget/AudioRecordWidget.h \
+    Models/RecordModel.h \
     RecorderWindow.h
 
 FORMS += \

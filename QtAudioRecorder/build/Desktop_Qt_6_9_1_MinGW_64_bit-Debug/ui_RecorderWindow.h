@@ -37,7 +37,7 @@ public:
     QPushButton *startAudioButton;
     QPushButton *stopAudioButton;
     QPushButton *addAudioRecordButton;
-    QLabel *timeAudioRecordLabel;
+    QLabel *durationLabel;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -70,7 +70,7 @@ public:
 "}"));
         inputComboBox = new QComboBox(centralwidget);
         inputComboBox->setObjectName("inputComboBox");
-        inputComboBox->setGeometry(QRect(222, 13, 231, 24));
+        inputComboBox->setGeometry(QRect(222, 10, 231, 24));
         inputComboBox->setCursor(QCursor(Qt::CursorShape::PointingHandCursor));
         outputComboBox = new QComboBox(centralwidget);
         outputComboBox->setObjectName("outputComboBox");
@@ -97,10 +97,11 @@ public:
         frame->setFrameShadow(QFrame::Shadow::Raised);
         startAudioButton = new QPushButton(frame);
         startAudioButton->setObjectName("startAudioButton");
-        startAudioButton->setGeometry(QRect(280, 0, 48, 48));
+        startAudioButton->setGeometry(QRect(280, 1, 48, 48));
         startAudioButton->setCursor(QCursor(Qt::CursorShape::PointingHandCursor));
         startAudioButton->setStyleSheet(QString::fromUtf8("QPushButton\n"
 "{\n"
+"	background-color: rgb(218, 218, 218);\n"
 "	border-radius: 24px;\n"
 "	border: none;\n"
 "}"));
@@ -110,10 +111,11 @@ public:
         startAudioButton->setIconSize(QSize(48, 48));
         stopAudioButton = new QPushButton(frame);
         stopAudioButton->setObjectName("stopAudioButton");
-        stopAudioButton->setGeometry(QRect(0, 0, 48, 48));
+        stopAudioButton->setGeometry(QRect(0, 1, 48, 48));
         stopAudioButton->setCursor(QCursor(Qt::CursorShape::PointingHandCursor));
         stopAudioButton->setStyleSheet(QString::fromUtf8("QPushButton\n"
 "{\n"
+"	background-color: rgb(218, 218, 218);\n"
 "	border-radius: 24px;\n"
 "	border: none;\n"
 "}"));
@@ -123,10 +125,11 @@ public:
         stopAudioButton->setIconSize(QSize(48, 48));
         addAudioRecordButton = new QPushButton(frame);
         addAudioRecordButton->setObjectName("addAudioRecordButton");
-        addAudioRecordButton->setGeometry(QRect(280, 0, 48, 48));
+        addAudioRecordButton->setGeometry(QRect(280, 1, 48, 48));
         addAudioRecordButton->setCursor(QCursor(Qt::CursorShape::PointingHandCursor));
         addAudioRecordButton->setStyleSheet(QString::fromUtf8("QPushButton\n"
 "{\n"
+"	background-color: rgb(218, 218, 218);\n"
 "	border-radius: 24px;\n"
 "	border: none;\n"
 "}"));
@@ -134,10 +137,10 @@ public:
         icon2.addFile(QString::fromUtf8(":/IMG/IMG/SendCommentMsgPin60x60.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
         addAudioRecordButton->setIcon(icon2);
         addAudioRecordButton->setIconSize(QSize(48, 48));
-        timeAudioRecordLabel = new QLabel(frame);
-        timeAudioRecordLabel->setObjectName("timeAudioRecordLabel");
-        timeAudioRecordLabel->setGeometry(QRect(230, 5, 49, 41));
-        timeAudioRecordLabel->setStyleSheet(QString::fromUtf8("QLabel\n"
+        durationLabel = new QLabel(frame);
+        durationLabel->setObjectName("durationLabel");
+        durationLabel->setGeometry(QRect(230, 5, 49, 41));
+        durationLabel->setStyleSheet(QString::fromUtf8("QLabel\n"
 "{\n"
 "	color: black;\n"
 "}"));
@@ -163,7 +166,7 @@ public:
         startAudioButton->setText(QString());
         stopAudioButton->setText(QString());
         addAudioRecordButton->setText(QString());
-        timeAudioRecordLabel->setText(QString());
+        durationLabel->setText(QString());
     } // retranslateUi
 
 };
