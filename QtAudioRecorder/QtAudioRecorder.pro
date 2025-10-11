@@ -13,6 +13,7 @@ SOURCES += \
     RecorderWindow.cpp
 
 HEADERS += \
+    Audio/AudioRecorder.h \
     CustomWidget/AudioRecordWidget.h \
     Models/RecordModel.h \
     RecorderWindow.h

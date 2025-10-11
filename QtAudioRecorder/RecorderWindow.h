@@ -13,6 +13,7 @@
 #include <QMediaFormat>
 #include <QBuffer>
 #include "Models/RecordModel.h"
+#include "Audio/AudioRecorder.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class RecorderWindow; }
@@ -35,20 +36,14 @@ private slots:
     void on_outputComboBox_currentIndexChanged(int index);
 
 private:
-    Ui::RecorderWindow *ui;
+    Ui::RecorderWindow      *ui;
+
+    QList <QAudioDevice>    inputAudioDevice;
+    QList <QAudioDevice>    outputAudioDevice;
 
     QList <RecordModel>     recordList;
 
-    QByteArray              audioBuffer;
-    QBuffer                 *buffer;
-
-    QMediaRecorder          *audioRecorder;
-    QMediaCaptureSession    *captureSession;
-    QAudioInput             *audioInput;
-    QAudioOutput            *audioOutput;
-
-    QList<QAudioDevice>     inputAudioDevice;
-    QList<QAudioDevice>     outputAudioDevice;
+    AudioRecorder           audioRecorder;
 
     void AddDevicesToComboBox();
 };

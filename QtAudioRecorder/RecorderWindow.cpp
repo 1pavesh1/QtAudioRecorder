@@ -9,35 +9,18 @@ RecorderWindow::RecorderWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    captureSession  = new QMediaCaptureSession(this);
-    audioRecorder   = new QMediaRecorder(this);
-    audioInput      = new QAudioInput(this);
-    audioOutput     = new QAudioOutput(this);
-
-    buffer = new QBuffer(&audioBuffer);
-
-    captureSession->setAudioInput(audioInput);
-    captureSession->setRecorder(audioRecorder);
-
-    connect(audioRecorder, &QMediaRecorder::durationChanged, this, &RecorderWindow::updateDuration);
-
-    QMediaFormat format;
-    format.setFileFormat(QMediaFormat::Wave);
-    format.setAudioCodec(QMediaFormat::AudioCodec::Wave);
-    audioRecorder->setMediaFormat(format);
-    audioRecorder->setAudioSampleRate(44100);
-    audioRecorder->setAudioBitRate(128000);
-    audioRecorder->setQuality(QMediaRecorder::HighQuality);
-    audioRecorder->setEncodingMode(QMediaRecorder::ConstantQualityEncoding);
+    // connect(audioRecorder, &QMediaRecorder::durationChanged, this, &RecorderWindow::updateDuration);
 
     ui->stopAudioButton->setVisible(false);
     ui->addAudioRecordButton->setVisible(false);
     ui->durationLabel->setVisible(false);
 
-    inputAudioDevice = QMediaDevices::audioInputs();
-    outputAudioDevice = QMediaDevices::audioOutputs();
+    inputAudioDevice    = QMediaDevices::audioInputs();
+    outputAudioDevice   = QMediaDevices::audioOutputs();
 
     AddDevicesToComboBox();
+
+
 }
 
 RecorderWindow::~RecorderWindow()
@@ -47,7 +30,7 @@ RecorderWindow::~RecorderWindow()
 
 void RecorderWindow::on_startAudioButton_clicked()
 {
-    audioRecorder->record();
+    audioRecorder.StartRecord();
 
     ui->stopAudioButton->setVisible(true);
     ui->addAudioRecordButton->setVisible(true);
@@ -57,8 +40,6 @@ void RecorderWindow::on_startAudioButton_clicked()
 
 void RecorderWindow::updateDuration(qint64 duration)
 {
-    if (audioRecorder->error() != QMediaRecorder::NoError) return;
-
     qint64 time = duration / 1000;
 
     ui->durationLabel->setText(QString("%1:%2")
@@ -68,7 +49,7 @@ void RecorderWindow::updateDuration(qint64 duration)
 
 void RecorderWindow::on_stopAudioButton_clicked()
 {
-    audioRecorder->stop();
+    audioRecorder.StopRecord();
 
     ui->stopAudioButton->setVisible(false);
     ui->addAudioRecordButton->setVisible(false);
@@ -78,7 +59,7 @@ void RecorderWindow::on_stopAudioButton_clicked()
 
 void RecorderWindow::on_addAudioRecordButton_clicked()
 {
-    audioRecorder->stop();
+    audioRecorder.StopRecord();
 
     ui->stopAudioButton->setVisible(false);
     ui->addAudioRecordButton->setVisible(false);
@@ -87,8 +68,10 @@ void RecorderWindow::on_addAudioRecordButton_clicked()
 
     RecordModel recordModel;
 
-    // recordModel.SetRecordData(audioRecorder->metaData());
-    recordModel.SetTimeRecord(audioRecorder->duration() / 1000);
+    recordModel.SetRecordData(audioRecorder.GetAudioData());
+    recordModel.SetTimeRecord(audioRecorder.GetDuration() / 1000);
+
+    qDebug() << audioRecorder.GetAudioData().size();
 
     recordList.push_back(recordModel);
 }
@@ -107,11 +90,10 @@ void RecorderWindow::AddDevicesToComboBox()
 
 void RecorderWindow::on_inputComboBox_currentIndexChanged(int index)
 {
-    audioInput->setDevice(inputAudioDevice[index]);
+    audioRecorder.SetInputDevice(inputAudioDevice[index]);
 }
 
 void RecorderWindow::on_outputComboBox_currentIndexChanged(int index)
 {
-    audioOutput->setDevice(outputAudioDevice[index]);
+    audioRecorder.SetOutputDevice(outputAudioDevice[index]);
 }
-
