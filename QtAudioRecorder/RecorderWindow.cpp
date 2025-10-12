@@ -9,8 +9,6 @@ RecorderWindow::RecorderWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // connect(audioRecorder, &QMediaRecorder::durationChanged, this, &RecorderWindow::updateDuration);
-
     ui->stopAudioButton->setVisible(false);
     ui->addAudioRecordButton->setVisible(false);
     ui->durationLabel->setVisible(false);
@@ -20,12 +18,23 @@ RecorderWindow::RecorderWindow(QWidget *parent)
 
     AddDevicesToComboBox();
 
-
+    connect(audioRecorder.GetMediaRecorder(), &QMediaRecorder::durationChanged, this, &RecorderWindow::updateDuration);
 }
 
 RecorderWindow::~RecorderWindow()
 {
     delete ui;
+}
+
+void RecorderWindow::AddRecordToList(const RecordModel &recordModel)
+{
+    AudioRecordWidget   *recordWidget = new AudioRecordWidget(recordModel, &outputAudioDevice[ui->outputComboBox->currentIndex()]);
+    QListWidgetItem     *item         = new QListWidgetItem();
+
+    item->setSizeHint(recordWidget->sizeHint());
+
+    ui->audioRecordList->addItem(item);
+    ui->audioRecordList->setItemWidget(item, recordWidget);
 }
 
 void RecorderWindow::on_startAudioButton_clicked()
@@ -40,11 +49,9 @@ void RecorderWindow::on_startAudioButton_clicked()
 
 void RecorderWindow::updateDuration(qint64 duration)
 {
-    qint64 time = duration / 1000;
-
     ui->durationLabel->setText(QString("%1:%2")
-                                   .arg(time / 60, 2, 10, QLatin1Char('0'))
-                                   .arg(time % 60, 2, 10, QLatin1Char('0')));
+                                   .arg((duration / 1000) / 60, 2, 10, QLatin1Char('0'))
+                                   .arg((duration / 1000) % 60, 2, 10, QLatin1Char('0')));
 }
 
 void RecorderWindow::on_stopAudioButton_clicked()
@@ -66,14 +73,7 @@ void RecorderWindow::on_addAudioRecordButton_clicked()
     ui->durationLabel->setVisible(false);
     ui->startAudioButton->setVisible(true);
 
-    RecordModel recordModel;
-
-    recordModel.SetRecordData(audioRecorder.GetAudioData());
-    recordModel.SetTimeRecord(audioRecorder.GetDuration() / 1000);
-
-    qDebug() << audioRecorder.GetAudioData().size();
-
-    recordList.push_back(recordModel);
+    // AddRecordToList(audioRecorder.GetRecord());
 }
 
 void RecorderWindow::AddDevicesToComboBox()
@@ -95,5 +95,5 @@ void RecorderWindow::on_inputComboBox_currentIndexChanged(int index)
 
 void RecorderWindow::on_outputComboBox_currentIndexChanged(int index)
 {
-    audioRecorder.SetOutputDevice(outputAudioDevice[index]);
+
 }

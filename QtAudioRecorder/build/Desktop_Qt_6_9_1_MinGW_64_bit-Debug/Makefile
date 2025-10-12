@@ -307,6 +307,7 @@ Makefile: ../../QtAudioRecorder.pro D:/Qt/6.9.1/mingw_64/mkspecs/win32-g++/qmake
 		D:/Qt/6.9.1/mingw_64/mkspecs/features/yacc.prf \
 		D:/Qt/6.9.1/mingw_64/mkspecs/features/lex.prf \
 		../../QtAudioRecorder.pro \
+		D:/Qt/6.9.1/mingw_64/lib/Qt6MultimediaWidgets.prl \
 		D:/Qt/6.9.1/mingw_64/lib/Qt6Widgets.prl \
 		D:/Qt/6.9.1/mingw_64/lib/Qt6Multimedia.prl \
 		D:/Qt/6.9.1/mingw_64/lib/Qt6Gui.prl \
@@ -553,6 +554,7 @@ D:/Qt/6.9.1/mingw_64/mkspecs/features/exceptions.prf:
 D:/Qt/6.9.1/mingw_64/mkspecs/features/yacc.prf:
 D:/Qt/6.9.1/mingw_64/mkspecs/features/lex.prf:
 ../../QtAudioRecorder.pro:
+D:/Qt/6.9.1/mingw_64/lib/Qt6MultimediaWidgets.prl:
 D:/Qt/6.9.1/mingw_64/lib/Qt6Widgets.prl:
 D:/Qt/6.9.1/mingw_64/lib/Qt6Multimedia.prl:
 D:/Qt/6.9.1/mingw_64/lib/Qt6Gui.prl:

@@ -3,91 +3,98 @@
 
 #include <QAudioDevice>
 #include <QAudioInput>
-#include <QAudioOutput>
 #include <QAudioSource>
 #include <QMediaRecorder>
 #include <QMediaFormat>
 #include <QMediaCaptureSession>
 #include <QMediaDevices>
+#include <QAudioBufferInput>
 #include <QByteArray>
 #include <QBuffer>
 #include <QIODevice>
+#include <QUrl>
+#include <QDir>
+#include <QTimer>
+#include "Models/RecordModel.h"
 
 class AudioRecorder : public QObject
 {
     Q_OBJECT
 
 private:
-    QMediaRecorder          *audioRecorder;
     QMediaCaptureSession    *captureSession;
-    QAudioSource            *audioSource;
-    QBuffer                 *audioBuffer;
-    QAudioDevice            audioInput;
-    QAudioDevice            audioOutput;
-    QAudioFormat            format;
-    QByteArray              audioData;
+    QMediaRecorder          *mediaRecorder;
+    QAudioInput             *audioInput;
+    RecordModel             recordModel;
+    QMediaFormat            mediaFormat;
+
+    void SaveData() {
+        QByteArray  audioData;
+        QFile       file(QDir::currentPath() + "/tempRecord.wav");
+
+        if (!file.open(QIODevice::ReadOnly)) {
+            qDebug() << "Файл не открыт для чтения";
+        }
+
+        qDebug() << audioData.size();
+
+        audioData = file.readAll();
+
+        file.remove();
+
+        qDebug() << audioData.size();
+
+        recordModel.SetRecordData(audioData);
+        recordModel.SetTimeRecord(mediaRecorder->duration() / 1000);
+    }
+
+    void SetFormat() {
+        captureSession->setRecorder(mediaRecorder);
+
+        mediaFormat.setFileFormat(QMediaFormat::Wave);
+        mediaFormat.setAudioCodec(QMediaFormat::AudioCodec::Wave);
+        mediaRecorder->setMediaFormat(mediaFormat);
+        mediaRecorder->setQuality(QMediaRecorder::HighQuality);
+        mediaRecorder->setAudioSampleRate(44100);
+        mediaRecorder->setAudioBitRate(128000);
+
+        mediaRecorder->setOutputLocation(QUrl::fromLocalFile(QDir::currentPath() + "/tempRecord"));
+    }
 
 public:
-    AudioRecorder(QObject *parent = nullptr) : QObject(parent)
-    {
-        captureSession  = new QMediaCaptureSession();
-        audioRecorder   = new QMediaRecorder();
-        audioBuffer     = new QBuffer();
+    AudioRecorder(QObject *parent = nullptr) : QObject(parent) {
+        mediaRecorder = new QMediaRecorder(this);
+        captureSession = new QMediaCaptureSession(this);
 
-        audioBuffer->open(QIODevice::ReadWrite);
+        SetFormat();
     }
 
-    ~AudioRecorder()
-    {
-        if (audioBuffer) {
-            audioBuffer->close();
-            delete audioBuffer;
+    ~AudioRecorder() {
+
+    }
+
+    void StartRecord() {
+        mediaRecorder->record();
+    }
+
+    void StopRecord() {
+        if (mediaRecorder->recorderState() == QMediaRecorder::RecordingState) {
+            mediaRecorder->stop();
+            QTimer::singleShot(2000, this, &AudioRecorder::SaveData);
         }
     }
 
-    void StartRecord()
-    {
-        audioData.clear();
-        audioBuffer->buffer().clear();
-        audioBuffer->seek(0);
-
-        format.setSampleRate(44100);
-        format.setChannelCount(1);
-        format.setSampleFormat(QAudioFormat::Int16);
-
-        audioSource = new QAudioSource(audioInput, format, this);
-
-        audioSource->start(audioBuffer);
+    void SetInputDevice(const QAudioDevice &inputDevice) {
+        audioInput = new QAudioInput(inputDevice, this);
+        captureSession->setAudioInput(audioInput);
     }
 
-    void StopRecord()
-    {
-        if (audioSource)
-        {
-            audioSource->stop();
-            audioData = audioBuffer->buffer();
-            delete audioSource;
-        }
+    RecordModel GetRecord() const {
+        return recordModel;
     }
 
-    void SetInputDevice(const QAudioDevice &inputDevice)
-    {
-        audioInput = inputDevice;
-    }
-
-    void SetOutputDevice(const QAudioDevice &outputDevice)
-    {
-        audioOutput = outputDevice;
-    }
-
-    QByteArray GetAudioData()
-    {
-        return audioData;
-    }
-
-    qint64 GetDuration()
-    {
-        return audioRecorder->duration();
+    QMediaRecorder* GetMediaRecorder() const {
+        return mediaRecorder;
     }
 };
 

@@ -12,6 +12,7 @@
 #include <QMediaRecorder>
 #include <QMediaFormat>
 #include <QBuffer>
+#include "CustomWidget/AudioRecordWidget.h"
 #include "Models/RecordModel.h"
 #include "Audio/AudioRecorder.h"
 
@@ -45,6 +46,7 @@ private:
 
     AudioRecorder           audioRecorder;
 
+    void AddRecordToList(const RecordModel &recordModel);
     void AddDevicesToComboBox();
 };
 
