@@ -202,6 +202,12 @@ public:
             delete buffer;
         }
     }
+
+    void SetOutputDevice(const QAudioDevice &outputDevice)
+    {
+        audioOutput.setDevice(outputDevice);
+        player->setAudioOutput(&audioOutput);
+    }
 };
 
 #endif // AUDIORECORDWIDGET_H

@@ -8,13 +8,19 @@ class RecordModel
 {
 private:
     QByteArray recordData;
-    qint64     timeRecord;
+    qint32     timeRecord;
+
 public:
+
+    RecordModel(const QByteArray &recordData, const qint32 &timeRecord) : recordData(recordData), timeRecord(timeRecord) {
+
+    }
+
     void SetRecordData(const QByteArray &recordData) {
         this->recordData = recordData;
     }
 
-    void SetTimeRecord(const qint64 &timeRecord) {
+    void SetTimeRecord(const qint32 &timeRecord) {
         this->timeRecord = timeRecord;
     }
 
@@ -22,7 +28,7 @@ public:
         return recordData;
     }
 
-    qint64 GetTimeRecord() const {
+    qint32 GetTimeRecord() const {
         return timeRecord;
     }
 };

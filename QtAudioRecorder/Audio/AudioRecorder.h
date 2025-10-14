@@ -15,6 +15,7 @@
 #include <QUrl>
 #include <QDir>
 #include <QTimer>
+#include <QThread>
 #include "Models/RecordModel.h"
 
 class AudioRecorder : public QObject
@@ -25,30 +26,10 @@ private:
     QMediaCaptureSession    *captureSession;
     QMediaRecorder          *mediaRecorder;
     QAudioInput             *audioInput;
-    RecordModel             recordModel;
-    QMediaFormat            mediaFormat;
-
-    void SaveData() {
-        QByteArray  audioData;
-        QFile       file(QDir::currentPath() + "/tempRecord.wav");
-
-        if (!file.open(QIODevice::ReadOnly)) {
-            qDebug() << "Файл не открыт для чтения";
-        }
-
-        qDebug() << audioData.size();
-
-        audioData = file.readAll();
-
-        file.remove();
-
-        qDebug() << audioData.size();
-
-        recordModel.SetRecordData(audioData);
-        recordModel.SetTimeRecord(mediaRecorder->duration() / 1000);
-    }
 
     void SetFormat() {
+        QMediaFormat mediaFormat;
+
         captureSession->setRecorder(mediaRecorder);
 
         mediaFormat.setFileFormat(QMediaFormat::Wave);
@@ -59,6 +40,24 @@ private:
         mediaRecorder->setAudioBitRate(128000);
 
         mediaRecorder->setOutputLocation(QUrl::fromLocalFile(QDir::currentPath() + "/tempRecord"));
+    }
+
+    QByteArray GetRecordData() {
+
+        QByteArray  audioData;
+        QFile       file(QDir::currentPath() + "/tempRecord.wav");
+
+        if (!file.open(QIODevice::ReadOnly)) {
+            qDebug() << "Файл не открыт для чтения";
+        }
+        QThread::msleep(500);
+        qDebug() << audioData.size();
+        audioData = file.readAll();
+        qDebug() << audioData.size();
+
+        file.remove();
+
+        return audioData;
     }
 
 public:
@@ -80,7 +79,6 @@ public:
     void StopRecord() {
         if (mediaRecorder->recorderState() == QMediaRecorder::RecordingState) {
             mediaRecorder->stop();
-            QTimer::singleShot(2000, this, &AudioRecorder::SaveData);
         }
     }
 
@@ -89,7 +87,9 @@ public:
         captureSession->setAudioInput(audioInput);
     }
 
-    RecordModel GetRecord() const {
+    RecordModel GetRecord() {
+        RecordModel recordModel(GetRecordData(),
+                                mediaRecorder->duration() / 1000);
         return recordModel;
     }
 

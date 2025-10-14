@@ -18,6 +18,8 @@ RecorderWindow::RecorderWindow(QWidget *parent)
 
     AddDevicesToComboBox();
 
+    audioRecorder.SetInputDevice(inputAudioDevice[ui->outputComboBox->currentIndex()]);
+
     connect(audioRecorder.GetMediaRecorder(), &QMediaRecorder::durationChanged, this, &RecorderWindow::updateDuration);
 }
 
@@ -28,6 +30,7 @@ RecorderWindow::~RecorderWindow()
 
 void RecorderWindow::AddRecordToList(const RecordModel &recordModel)
 {
+    qDebug() << "AddRecordToList: " << recordModel.GetRecordData().size();
     AudioRecordWidget   *recordWidget = new AudioRecordWidget(recordModel, &outputAudioDevice[ui->outputComboBox->currentIndex()]);
     QListWidgetItem     *item         = new QListWidgetItem();
 
@@ -73,7 +76,7 @@ void RecorderWindow::on_addAudioRecordButton_clicked()
     ui->durationLabel->setVisible(false);
     ui->startAudioButton->setVisible(true);
 
-    // AddRecordToList(audioRecorder.GetRecord());
+    AddRecordToList(audioRecorder.GetRecord());
 }
 
 void RecorderWindow::AddDevicesToComboBox()
@@ -95,5 +98,8 @@ void RecorderWindow::on_inputComboBox_currentIndexChanged(int index)
 
 void RecorderWindow::on_outputComboBox_currentIndexChanged(int index)
 {
-
+    for (qint16 i = 0; i < ui->audioRecordList->count(); ++i) {
+        AudioRecordWidget *audioWidget = qobject_cast<AudioRecordWidget*>(ui->audioRecordList->itemWidget(ui->audioRecordList->item(i)));
+        audioWidget->SetOutputDevice(outputAudioDevice[index]);
+    }
 }
