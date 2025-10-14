@@ -30,14 +30,14 @@ public:
     QWidget *centralwidget;
     QListWidget *audioRecordList;
     QLabel *inputLabel;
-    QComboBox *inputComboBox;
-    QComboBox *outputComboBox;
     QLabel *outputLabel;
     QFrame *frame;
     QPushButton *startAudioButton;
     QPushButton *stopAudioButton;
     QPushButton *addAudioRecordButton;
     QLabel *durationLabel;
+    QComboBox *outputComboBox;
+    QComboBox *inputComboBox;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -52,13 +52,137 @@ public:
         audioRecordList = new QListWidget(centralwidget);
         audioRecordList->setObjectName("audioRecordList");
         audioRecordList->setGeometry(QRect(20, 80, 431, 471));
-        audioRecordList->setStyleSheet(QString::fromUtf8("QListWidget\n"
+        audioRecordList->setStyleSheet(QString::fromUtf8("QListWidget \n"
 "{\n"
+"	outline: 0;\n"
+"    background: transparent;\n"
+"}\n"
 "\n"
+"QListWidget::item \n"
+"{\n"
+"	border: none;\n"
+"    background: transparent;\n"
+"    padding: 0px;\n"
+"    margin: 0px;\n"
+"}\n"
+"\n"
+"QListWidget::item:selected \n"
+"{\n"
+"	background: transparent;\n"
+"	border: none;\n"
+"}\n"
+"\n"
+"QListWidget::item:hover \n"
+"{\n"
+"	background: transparent;\n"
+"}\n"
+"\n"
+"QPushButton \n"
+"{\n"
+"    border: none;\n"
+"    padding: 4px;\n"
+"}\n"
+"\n"
+"QScrollBar:vertical \n"
+"{\n"
+"	border: none;\n"
+"    background: #f5f5f5;\n"
+"    width: 10px;\n"
+"    margin: 0px 0px 0px 0px;\n"
+"}\n"
+"\n"
+"QScrollBar::handle:vertical \n"
+"{\n"
+"	background: #c1c1c1;\n"
+"    min-height: 20px;\n"
+"    border-radius: 5px;\n"
+"}\n"
+"\n"
+"QScrollBar::handle:vertical:hover \n"
+"{\n"
+"	background: #a8a8a8;\n"
+"}\n"
+"\n"
+"QScrollBar::handle:vertical:pressed\n"
+"{\n"
+"	background: #787878;\n"
+"}\n"
+"\n"
+"QScrollBar::add-line:vertical \n"
+"{\n"
+"	border: none;\n"
+"    background: none;\n"
+"    height: 0px;\n"
+"    subc"
+                        "ontrol-position: bottom;\n"
+"    subcontrol-origin: margin;\n"
+"}\n"
+"\n"
+"QScrollBar::sub-line:vertical \n"
+"{\n"
+"	border: none;\n"
+"	background: none;\n"
+"	height: 0px;\n"
+"	subcontrol-position: top;\n"
+"	subcontrol-origin: margin;\n"
+"}\n"
+"\n"
+"QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical \n"
+"{\n"
+"	background: none;\n"
+"}\n"
+"\n"
+"QScrollBar:horizontal \n"
+"{\n"
+"	border: none;\n"
+"    background: #f5f5f5;\n"
+"    height: 10px;\n"
+"    margin: 0px 0px 0px 0px;\n"
+"}\n"
+"\n"
+"QScrollBar::handle:horizontal \n"
+"{\n"
+"    background: #c1c1c1;\n"
+"    min-width: 20px;\n"
+"	border-radius: 5px;\n"
+"}\n"
+"\n"
+"QScrollBar::handle:horizontal:hover \n"
+"{\n"
+"	background: #a8a8a8;\n"
+"}\n"
+"\n"
+"QScrollBar::handle:horizontal:pressed \n"
+"{\n"
+"	background: #787878;\n"
+"}\n"
+"\n"
+"QScrollBar::add-line:horizontal \n"
+"{\n"
+"    border: none;\n"
+"    background: none;\n"
+"    width: 0px;\n"
+"    subcontrol-position: right;\n"
+"	subcontrol-origin: margin;\n"
+"}\n"
+"\n"
+"QScrollBar::sub-line:horizontal"
+                        " \n"
+"{\n"
+"    border: none;\n"
+"    background: none;\n"
+"    width: 0px;\n"
+"    subcontrol-position: left;\n"
+"	subcontrol-origin: margin;\n"
+"}\n"
+"\n"
+"QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal\n"
+"{\n"
+"	background: none;\n"
 "}"));
         inputLabel = new QLabel(centralwidget);
         inputLabel->setObjectName("inputLabel");
-        inputLabel->setGeometry(QRect(20, 10, 191, 21));
+        inputLabel->setGeometry(QRect(10, 10, 191, 21));
         QFont font;
         font.setFamilies({QString::fromUtf8("Arial")});
         font.setPointSize(14);
@@ -68,17 +192,9 @@ public:
 "{\n"
 "	color: black;\n"
 "}"));
-        inputComboBox = new QComboBox(centralwidget);
-        inputComboBox->setObjectName("inputComboBox");
-        inputComboBox->setGeometry(QRect(222, 10, 231, 24));
-        inputComboBox->setCursor(QCursor(Qt::CursorShape::PointingHandCursor));
-        outputComboBox = new QComboBox(centralwidget);
-        outputComboBox->setObjectName("outputComboBox");
-        outputComboBox->setGeometry(QRect(222, 43, 231, 24));
-        outputComboBox->setCursor(QCursor(Qt::CursorShape::PointingHandCursor));
         outputLabel = new QLabel(centralwidget);
         outputLabel->setObjectName("outputLabel");
-        outputLabel->setGeometry(QRect(20, 45, 201, 21));
+        outputLabel->setGeometry(QRect(10, 50, 201, 21));
         outputLabel->setFont(font);
         outputLabel->setStyleSheet(QString::fromUtf8("QLabel\n"
 "{\n"
@@ -86,7 +202,7 @@ public:
 "}"));
         frame = new QFrame(centralwidget);
         frame->setObjectName("frame");
-        frame->setGeometry(QRect(460, 500, 331, 51));
+        frame->setGeometry(QRect(455, 500, 331, 51));
         frame->setStyleSheet(QString::fromUtf8("QFrame\n"
 "{\n"
 "	background-color: rgb(218, 218, 218);\n"
@@ -143,6 +259,86 @@ public:
         durationLabel->setStyleSheet(QString::fromUtf8("QLabel\n"
 "{\n"
 "	color: black;\n"
+"}"));
+        outputComboBox = new QComboBox(centralwidget);
+        outputComboBox->setObjectName("outputComboBox");
+        outputComboBox->setGeometry(QRect(220, 40, 231, 40));
+        outputComboBox->setCursor(QCursor(Qt::CursorShape::PointingHandCursor));
+        outputComboBox->setStyleSheet(QString::fromUtf8("QComboBox \n"
+"{\n"
+"    border: none;\n"
+"    border-bottom: 2px solid #e0e0e0;\n"
+"    padding: 12px 0px 8px 0px;\n"
+"    background: transparent;\n"
+"    color: #333;\n"
+"    font-size: 16px;\n"
+"}\n"
+"\n"
+"QComboBox:focus\n"
+"{\n"
+"    border-bottom-color: #3f51b5;\n"
+"}\n"
+"\n"
+"QComboBox::drop-down \n"
+"{\n"
+"    border: none;\n"
+"    width: 0px;\n"
+"}\n"
+"\n"
+"QComboBox::down-arrow {\n"
+"    width: 0px;\n"
+"	height: 0px;\n"
+"}\n"
+"\n"
+"QComboBox QAbstractItemView \n"
+"{\n"
+"    border: none;\n"
+"    background: white;\n"
+"    selection-background-color: #3f51b5;\n"
+"    selection-color: white;\n"
+"    font-size: 14px;\n"
+"    padding: 8px;\n"
+"    border-radius: 4px;\n"
+"}"));
+        inputComboBox = new QComboBox(centralwidget);
+        inputComboBox->setObjectName("inputComboBox");
+        inputComboBox->setGeometry(QRect(220, 0, 231, 40));
+        inputComboBox->setCursor(QCursor(Qt::CursorShape::PointingHandCursor));
+        inputComboBox->setStyleSheet(QString::fromUtf8("QComboBox \n"
+"{\n"
+"    border: none;\n"
+"    border-bottom: 2px solid #e0e0e0;\n"
+"    padding: 12px 0px 8px 0px;\n"
+"    background: transparent;\n"
+"    color: #333;\n"
+"    font-size: 16px;\n"
+"}\n"
+"\n"
+"QComboBox:focus\n"
+"{\n"
+"    border-bottom-color: #3f51b5;\n"
+"}\n"
+"\n"
+"QComboBox::drop-down \n"
+"{\n"
+"    border: none;\n"
+"    width: 0px;\n"
+"}\n"
+"\n"
+"QComboBox::down-arrow {\n"
+"    width: 0px;\n"
+"	height: 0px;\n"
+"}\n"
+"\n"
+"QComboBox QAbstractItemView \n"
+"{\n"
+"    border: none;\n"
+"    background: white;\n"
+"    selection-background-color: #3f51b5;\n"
+"    selection-color: white;\n"
+"    font-size: 14px;\n"
+"    padding: 8px;\n"
+"    border-radius: 4px;\n"
 "}"));
         RecorderWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(RecorderWindow);

@@ -30,7 +30,6 @@ RecorderWindow::~RecorderWindow()
 
 void RecorderWindow::AddRecordToList(const RecordModel &recordModel)
 {
-    qDebug() << "AddRecordToList: " << recordModel.GetRecordData().size();
     AudioRecordWidget   *recordWidget = new AudioRecordWidget(recordModel, &outputAudioDevice[ui->outputComboBox->currentIndex()]);
     QListWidgetItem     *item         = new QListWidgetItem();
 

@@ -50,10 +50,10 @@ private:
         if (!file.open(QIODevice::ReadOnly)) {
             qDebug() << "Файл не открыт для чтения";
         }
+
         QThread::msleep(500);
-        qDebug() << audioData.size();
+
         audioData = file.readAll();
-        qDebug() << audioData.size();
 
         file.remove();
 
