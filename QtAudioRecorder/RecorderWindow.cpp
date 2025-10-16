@@ -75,7 +75,12 @@ void RecorderWindow::on_addAudioRecordButton_clicked()
     ui->durationLabel->setVisible(false);
     ui->startAudioButton->setVisible(true);
 
-    AddRecordToList(audioRecorder.GetRecord());
+    RecordModel recordModel = audioRecorder.GetRecord();
+
+    if (recordModel.GetTimeRecord() <= 2)
+        qDebug() << "Сообщение не должно быть меньше 2 секунд !";
+    else
+        AddRecordToList(recordModel);
 }
 
 void RecorderWindow::AddDevicesToComboBox()

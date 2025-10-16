@@ -5,5 +5,6 @@
         <file>IMG/SendCommentMsgPin60x60.png</file>
         <file>IMG/PausePin48x48.png</file>
         <file>IMG/PlayPin48x48.png</file>
+        <file>IMG/UpdatePin50x50.png</file>
     </qresource>
 </RCC>

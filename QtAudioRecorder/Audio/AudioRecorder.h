@@ -89,7 +89,7 @@ public:
 
     RecordModel GetRecord() {
         RecordModel recordModel(GetRecordData(),
-                                mediaRecorder->duration() / 1000);
+                                mediaRecorder->duration());
         return recordModel;
     }
 

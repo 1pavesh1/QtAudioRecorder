@@ -51,7 +51,7 @@ public:
         centralwidget->setObjectName("centralwidget");
         audioRecordList = new QListWidget(centralwidget);
         audioRecordList->setObjectName("audioRecordList");
-        audioRecordList->setGeometry(QRect(20, 80, 431, 471));
+        audioRecordList->setGeometry(QRect(10, 80, 441, 471));
         audioRecordList->setStyleSheet(QString::fromUtf8("QListWidget \n"
 "{\n"
 "	outline: 0;\n"

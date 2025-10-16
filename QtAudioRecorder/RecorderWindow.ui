@@ -20,9 +20,9 @@
    <widget class="QListWidget" name="audioRecordList">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>80</y>
-      <width>431</width>
+      <width>441</width>
       <height>471</height>
      </rect>
     </property>
