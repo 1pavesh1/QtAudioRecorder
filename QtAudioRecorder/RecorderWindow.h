@@ -3,16 +3,7 @@
 
 #include <QMainWindow>
 #include <QList>
-#include <QAudioDevice>
 #include <QMediaDevices>
-#include <QAudioInput>
-#include <QAudioOutput>
-#include <QMediaCaptureSession>
-#include <QAudioBuffer>
-#include <QMediaRecorder>
-#include <QMediaFormat>
-#include <QBuffer>
-#include "CustomWidget/AudioRecordWidget.h"
 #include "Models/RecordModel.h"
 #include "Audio/AudioRecorder.h"
 
@@ -23,18 +14,6 @@ QT_END_NAMESPACE
 class RecorderWindow : public QMainWindow
 {
     Q_OBJECT
-
-public:
-    RecorderWindow(QWidget *parent = nullptr);
-    ~RecorderWindow();
-
-private slots:
-    void on_startAudioButton_clicked();
-    void on_stopAudioButton_clicked();
-    void on_addAudioRecordButton_clicked();
-    void updateDuration(qint64 duration);
-    void on_inputComboBox_currentIndexChanged(int index);
-    void on_outputComboBox_currentIndexChanged(int index);
 
 private:
     Ui::RecorderWindow      *ui;
@@ -48,6 +27,18 @@ private:
 
     void AddRecordToList(const RecordModel &recordModel);
     void AddDevicesToComboBox();
+
+private slots:
+    void on_startAudioButton_clicked();
+    void on_stopAudioButton_clicked();
+    void on_addAudioRecordButton_clicked();
+    void on_inputComboBox_currentIndexChanged(int index);
+    void on_outputComboBox_currentIndexChanged(int index);
+    void updateDuration(qint64 duration);
+
+public:
+    RecorderWindow(QWidget *parent = nullptr);
+    ~RecorderWindow();
 };
 
 #endif // RECORDERWINDOW_H

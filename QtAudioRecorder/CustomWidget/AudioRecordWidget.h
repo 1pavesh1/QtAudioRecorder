@@ -12,24 +12,21 @@ class AudioRecordWidget : public QWidget, public CustomWidget, public CustomMedi
 private:
     RecordModel     recordModel;
     QAudioOutput    audioOutput;
-    QVBoxLayout     *mainLayout;
-    QHBoxLayout     *headerLayout;
 
     void InitializationInterface() override {
-        this->setContentsMargins(10, 8, 10, 8);
+        this->setContentsMargins(10, 5, 10, 8);
 
-        mainLayout = new QVBoxLayout(this);
+        QVBoxLayout *mainLayout = new QVBoxLayout(this);
+
+        QVBoxLayout *sliderLayout = new QVBoxLayout(this);
+        sliderLayout->setContentsMargins(0, 24, 0, 0);
 
         QHBoxLayout *mediaLayout = new QHBoxLayout(this);
 
-        QVBoxLayout *sliderLayout = new QVBoxLayout(this);
-        sliderLayout->setContentsMargins(0, 12, 0, 0);
-
         timeSlider = new QSlider(Qt::Horizontal);
-        timeSlider->setRange(0, 0);
-        timeSlider->setFixedHeight(4);
+        timeSlider->setCursor(Qt::PointingHandCursor);
 
-        playButton = new QPushButton();
+        playButton = new QPushButton(this);
         playButton->setCursor(Qt::PointingHandCursor);
         playButton->setIcon(QIcon(":/IMG/IMG/PlayPin48x48.png"));
         playButton->setFixedSize(32, 32);
@@ -52,30 +49,28 @@ private:
 
     void SetupQCC() override {
         setStyleSheet(R"(
-            AudioRecordWidget
-            {
+            AudioRecordWidget {
                 background-color: transparent;
                 border-radius: 18px;
             }
-            AudioRecordWidget:hover
-            {
+            AudioRecordWidget:hover {
                 background-color: transparent;
             }
-            QLabel#timeLabel
-            {
+            QLabel#timeLabel {
                 font-size: 12px;
                 color: black;
                 background: transparent;
             }
-            QSlider::groove:horizontal
+            QSlider
             {
-                background: #e0e0e0;
-                height: 6px;
-                border-radius: 3px;
                 background: transparent;
             }
-            QSlider::handle:horizontal
-            {
+            QSlider::groove:horizontal {
+                height: 6px;
+                border-radius: 3px;
+                background-color: white;
+            }
+            QSlider::handle:horizontal {
                 width: 16px;
                 height: 16px;
                 margin: -5px 0;
@@ -83,54 +78,52 @@ private:
                 border: 2px;
                 border-radius: 8px;
             }
-            QSlider::sub-page:horizontal
-            {
+            QSlider::sub-page:horizontal {
                 background: rgb(103, 194, 255);
                 border-radius: 3px;
             }
-            QPushButton
-            {
+            QSlider::add-page:horizontal {
+                border-radius: 3px;
+            }
+            QPushButton {
                 border: none;
                 padding: 8px 12px;
                 min-width: 20px;
                 background: transparent;
             }
-            QPushButton:hover
-            {
+            QPushButton:hover {
                 background: transparent;
             }
-            #mediaContainer
-            {
+            #mediaContainer {
                 background: rgba(255, 255, 255, 180);
                 border-radius: 6px;
-                background: transparent;
-            }
-            #headerWidget
-            {
-                background: transparent;
             }
         )");
     }
 
     void paintEvent(QPaintEvent *event) override {
-        QStyleOption opt;
-        opt.initFrom(this);
-        QPainter p(this);
-        p.setRenderHint(QPainter::Antialiasing);
-        p.setBrush(QBrush(QColor(218, 218, 218)));
-        p.setPen(Qt::NoPen);
-        QRect roundedRect = rect().adjusted(10, 15, -10, -15);
-        p.drawRoundedRect(roundedRect, 18, 18);
-        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+        QRect           roundedRect = rect().adjusted(10, 20, -10, -18);
+        QStyleOption    option;
+        QPainter        painter(this);
+
+        option.initFrom(this);
+
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setBrush(QBrush(QColor(218, 218, 218)));
+        painter.setPen(Qt::NoPen);
+        painter.drawRoundedRect(roundedRect, 18, 18);
+
+        style()->drawPrimitive(QStyle::PE_Widget, &option, &painter, this);
+
         QWidget::paintEvent(event);
     }
 
     void LoadContent() override {
-        player          = new QMediaPlayer(this);
+        player = new QMediaPlayer(this);
+        buffer = new QBuffer();
 
         player->setAudioOutput(&audioOutput);
 
-        buffer = new QBuffer();
         buffer->setData(recordModel.GetRecordData());
         if (buffer && !buffer->isOpen()) {
             buffer->open(QIODevice::ReadOnly);

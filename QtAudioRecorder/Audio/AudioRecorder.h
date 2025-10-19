@@ -3,18 +3,12 @@
 
 #include <QAudioDevice>
 #include <QAudioInput>
-#include <QAudioSource>
 #include <QMediaRecorder>
 #include <QMediaFormat>
 #include <QMediaCaptureSession>
-#include <QMediaDevices>
-#include <QAudioBufferInput>
 #include <QByteArray>
-#include <QBuffer>
-#include <QIODevice>
 #include <QUrl>
 #include <QDir>
-#include <QTimer>
 #include <QThread>
 #include "Models/RecordModel.h"
 
@@ -43,7 +37,6 @@ private:
     }
 
     QByteArray GetRecordData() {
-
         QByteArray  audioData;
         QFile       file(QDir::currentPath() + "/tempRecord.wav");
 
@@ -69,7 +62,9 @@ public:
     }
 
     ~AudioRecorder() {
-
+        delete audioInput;
+        delete mediaRecorder;
+        delete captureSession;
     }
 
     void StartRecord() {

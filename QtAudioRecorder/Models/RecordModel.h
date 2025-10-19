@@ -11,10 +11,7 @@ private:
     qint32     timeRecord;
 
 public:
-
-    RecordModel(const QByteArray &recordData, const qint32 &timeRecord) : recordData(recordData), timeRecord(timeRecord) {
-
-    }
+    RecordModel(const QByteArray &recordData, const qint32 &timeRecord) : recordData(recordData), timeRecord(timeRecord) { }
 
     void SetRecordData(const QByteArray &recordData) {
         this->recordData = recordData;
